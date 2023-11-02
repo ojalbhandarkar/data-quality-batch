@@ -129,7 +129,8 @@ class ExecutionResultsWriter:
                 rule_execution_result[start_time_key],
                 rule_execution_result[end_time_key],
                 get_duration(rule_execution_result[end_time_key], rule_execution_result[start_time_key]),
-                get_current_time()]
+                get_current_time(),
+                rule_execution_result['query_execution_id']]
 
     def get_rule_execution_details(self, rule_id, rule_execution_result, failed_records_count):
         pass_records_count = rule_execution_result['total_records_count'] - failed_records_count
