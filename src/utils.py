@@ -70,17 +70,9 @@ def gs_reader(path):
 
 def get_current_time():
     current_datetime = datetime.now()
-    current_time_without_milliseconds = datetime(
-        current_datetime.year,
-        current_datetime.month,
-        current_datetime.day,
-        current_datetime.hour,
-        current_datetime.minute,
-        current_datetime.second
-    )
-    return current_time_without_milliseconds
+    return current_datetime
 
 
 def get_duration(end_time, start_time):
     delta = end_time - start_time
-    return int(delta.total_seconds())
+    return int(delta.total_seconds() * 1000)

@@ -10,7 +10,7 @@ class AggregatedReportTable(TableDefinition):
     def __init__(self):
         super().__init__(
             dataset_name=DATASET_NAME,
-            table_name='dq_aggregated_reporting_temp'
+            table_name='dq_aggregated_reporting'
         )
         self.JOB_RUN_ID_COL_NAME = 'job_run_id'
         self.JOB_RUN_ID_DATA_TYPE = IntegerType()
@@ -98,7 +98,7 @@ class AggregatedReportFailedInfoTable(TableDefinition):
     def __init__(self):
         super().__init__(
             dataset_name=DATASET_NAME,
-            table_name='dq_aggregated_reporting_temp_failed_info'
+            table_name='dq_aggregated_reporting_failed_info'
         )
         self.JOB_RUN_ID_COL_NAME = 'job_run_id'
         self.JOB_RUN_ID_DATA_TYPE = IntegerType()

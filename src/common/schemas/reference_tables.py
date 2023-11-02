@@ -2,7 +2,7 @@ from pyspark.sql.types import StringType, TimestampType, IntegerType, BooleanTyp
 
 from src.common.schemas.table_definition import TableDefinition
 
-DATASET_NAME = 'data_quality_ds'
+DATASET_NAME = 'dq_metadata'
 
 
 class RulesTable(TableDefinition):
@@ -10,7 +10,7 @@ class RulesTable(TableDefinition):
     def __init__(self):
         super().__init__(
             dataset_name=DATASET_NAME,
-            table_name='dq_metadata_schema_rule'
+            table_name='rule'
         )
         self.RULE_ID_COL_NAME = 'rule_id'
         self.RULE_ID_DATA_TYPE = IntegerType()
@@ -50,7 +50,7 @@ class RuleEntityMapTable(TableDefinition):
     def __init__(self):
         super().__init__(
             dataset_name=DATASET_NAME,
-            table_name='dq_metadata_schema_rule_entity_map'
+            table_name='rule_entity_map'
         )
         self.RULE_ENTITY_ID_COL_NAME = 'rule_entity_id'
         self.RULE_ENTITY_ID_DATA_TYPE = IntegerType()
@@ -90,7 +90,7 @@ class RulePropertiesTable(TableDefinition):
     def __init__(self):
         super().__init__(
             dataset_name=DATASET_NAME,
-            table_name='dq_metadata_schema_rule_properties'
+            table_name='rule_properties'
         )
         self.RULE_PROP_ID_COL_NAME = 'rule_prop_id'
         self.RULE_PROP_ID_DATA_TYPE = IntegerType()
@@ -127,14 +127,14 @@ class RuleSetTable(TableDefinition):
     def __init__(self):
         super().__init__(
             dataset_name=DATASET_NAME,
-            table_name='dq_metadata_schema_rule_set'
+            table_name='ruleset'
         )
         self.RULESET_NAME_COL_NAME = 'ruleset_name'
         self.RULESET_NAME_DATA_TYPE = StringType()
         self.RULESET_DESCRIPTION_COL_NAME = 'ruleset_description'
         self.RULESET_DESCRIPTION_DATA_TYPE = StringType()
-        self.NOTIFICATION_PREFERENCES_COL_NAME = 'notification_preferences'
-        self.NOTIFICATION_PREFERENCES_DATA_TYPE = StringType()
+        self.NOTIFICATION_EMAIL_COL_NAME = 'notification_email'
+        self.NOTIFICATION_EMAIL_DATA_TYPE = StringType()
         self.RULESET_ID_COL_NAME = 'ruleset_id'
         self.RULESET_ID_DATA_TYPE = IntegerType()
         self.CREATED_BY_COL_NAME = 'created_by'
@@ -150,7 +150,7 @@ class RuleSetTable(TableDefinition):
         return StructType([
             StructField(self.RULESET_NAME_COL_NAME, self.RULESET_NAME_DATA_TYPE, True),
             StructField(self.RULESET_DESCRIPTION_COL_NAME, self.RULESET_DESCRIPTION_DATA_TYPE, True),
-            StructField(self.NOTIFICATION_PREFERENCES_COL_NAME, self.NOTIFICATION_PREFERENCES_DATA_TYPE, True),
+            StructField(self.NOTIFICATION_EMAIL_COL_NAME, self.NOTIFICATION_EMAIL_DATA_TYPE, True),
             StructField(self.RULESET_ID_COL_NAME, self.RULESET_ID_DATA_TYPE, True),
             StructField(self.CREATED_BY_COL_NAME, self.CREATED_BY_DATA_TYPE, True),
             StructField(self.CREATED_DATE_COL_NAME, self.CREATED_DATE_DATA_TYPE, True),
@@ -164,7 +164,7 @@ class RuleTemplateTable(TableDefinition):
     def __init__(self):
         super().__init__(
             dataset_name=DATASET_NAME,
-            table_name='dq_metadata_schema_rule_template'
+            table_name='rule_template'
         )
         self.RULE_TEMPLATE_ID_COL_NAME = 'rule_template_id'
         self.RULE_TEMPLATE_ID_DATA_TYPE = IntegerType()
@@ -201,7 +201,7 @@ class EntityTable(TableDefinition):
     def __init__(self):
         super().__init__(
             dataset_name=DATASET_NAME,
-            table_name='dq_metadata_schema_entity'
+            table_name='entity'
         )
         self.ENTITY_ID_COL_NAME = 'entity_id'
         self.ENTITY_ID_DATA_TYPE = IntegerType()

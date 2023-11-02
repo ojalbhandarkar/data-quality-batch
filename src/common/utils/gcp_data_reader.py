@@ -78,7 +78,7 @@ class GCPDataReader:
         bool_columns = [col_detail[0] for col_detail in df.dtypes if col_detail[1] == 'boolean']
         timestamp_columns = [col_detail[0] for col_detail in df.dtypes if col_detail[1] == 'timestamp']
         fixed_timestamp_df = reduce(
-            lambda int_df, col_name: int_df.withColumn(col_name, date_format(col_name, "yyyy-MM-dd HH:mm:ss")),
+            lambda int_df, col_name: int_df.withColumn(col_name, date_format(col_name, "yyyy-MM-dd HH:mm:ss.SSSSSS")),
             timestamp_columns,
             df
         )
@@ -92,6 +92,6 @@ class GCPDataReader:
             result_df[column] = result_df[column].astype('bool')
 
         for column in timestamp_columns:
-            result_df[column] = pd.to_datetime(result_df[column], format="%Y-%m-%d %H:%M:%S")
+            result_df[column] = pd.to_datetime(result_df[column], format="%Y-%m-%d %H:%M:%S.%f")
 
         return result_df
