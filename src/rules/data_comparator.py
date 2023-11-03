@@ -5,6 +5,7 @@ from pyspark.sql.types import StringType, IntegerType, StructField, StructType, 
 from src.reader import read
 from src.utils import get_spark_session, get_empty_data_frame, get_unique_id, get_current_time
 from src.constants import *
+import hashlib
 
 
 class DataComparator:
@@ -47,7 +48,8 @@ class DataComparator:
         source = read(source_entity, source_query, self.context)
         self.results['source_query_end_time'] = get_current_time()
         self.results['source_query_start_time'] = source_query_execution_start_time
-
+        self.results['s_query_execution_id'] =  hashlib.sha256(source_query.encode('utf-8')).hexdigest()
+        self.results['t_query_execution_id'] =  hashlib.sha256(target_query.encode('utf-8')).hexdigest()
         target_query_execution_start_time = get_current_time()
         target = read(target_entity, target_query, self.context)
         self.results['target_query_end_time'] = get_current_time()

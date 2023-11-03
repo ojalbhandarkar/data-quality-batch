@@ -46,7 +46,8 @@ def query_stats_schema():
         StructField('start_time', TimestampType(), True),
         StructField('end_time', TimestampType(), True),
         StructField('total_execution_time', IntegerType(), True),
-        StructField('created_time', TimestampType(), True)
+        StructField('created_time', TimestampType(), True),
+        StructField('query_execution_id', StringType(), True)
     ])
     return schema
 
@@ -123,6 +124,7 @@ class ExecutionResultsWriter:
         query_key = f'{query_type}_records_query'
         start_time_key = f'{query_type}_records_query_execution_start_time'
         end_time_key = f'{query_type}_records_query_execution_end_time'
+        query_id = rule_execution_result['query_execution_id'] if rule_execution_result['query_execution_id'] is not None else "None"
         return [self.context.get_job_run_id(),
                 rule_id,
                 rule_execution_result[query_key],
@@ -130,7 +132,7 @@ class ExecutionResultsWriter:
                 rule_execution_result[end_time_key],
                 get_duration(rule_execution_result[end_time_key], rule_execution_result[start_time_key]),
                 get_current_time(),
-                rule_execution_result['query_execution_id']]
+                query_id]
 
     def get_rule_execution_details(self, rule_id, rule_execution_result, failed_records_count):
         pass_records_count = rule_execution_result['total_records_count'] - failed_records_count
@@ -170,6 +172,8 @@ class ExecutionResultsWriter:
     def handle_data_diff(self, rule_id, rule_execution_result):
         write(rule_execution_result['comparison_summary'], 'comparison_summary', self.context)
         write(rule_execution_result['comparison_details'], 'comparison_details', self.context)
+        s_query_id = rule_execution_result['s_query_execution_id'] if rule_execution_result['s_query_execution_id'] is not None else "None"
+        t_query_id = rule_execution_result['t_query_execution_id'] if rule_execution_result['t_query_execution_id'] is not None else "None"
         source_query_stat = [self.context.get_job_run_id(),
                              rule_id,
                              rule_execution_result['source_query'],
@@ -177,7 +181,8 @@ class ExecutionResultsWriter:
                              rule_execution_result['source_query_end_time'],
                              get_duration(rule_execution_result['source_query_end_time'],
                                           rule_execution_result['source_query_start_time']),
-                             get_current_time()]
+                             get_current_time(),
+                             s_query_id]
         target_query_stat = [self.context.get_job_run_id(),
                              rule_id,
                              rule_execution_result['target_query'],
@@ -185,7 +190,8 @@ class ExecutionResultsWriter:
                              rule_execution_result['target_query_end_time'],
                              get_duration(rule_execution_result['target_query_end_time'],
                                           rule_execution_result['target_query_start_time']),
-                             get_current_time()]
+                             get_current_time(),
+                             t_query_id]
         query_stats_list = [source_query_stat, target_query_stat]
 
         exception_summary = {

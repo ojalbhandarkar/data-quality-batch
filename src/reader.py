@@ -20,7 +20,7 @@ def csv(entity, query):
 def big_query(entity, query, context):
     get_spark_session().conf.set('temporaryGcsBucket', context.get_value('temp_gcs_bucket_name'))
     get_spark_session().conf.set('materializationDataset', context.get_value('bq_dataset'))
-    query_id = hashlib.sha256(query.encode('utf-8')).hexdigest()
+    query_id = hashlib.sha1(query.encode('utf-8')).hexdigest()
     get_spark_session().conf.set("bigQueryJobLabel.query_id", query_id)
     data = get_spark_session().read.format('bigquery'). \
         option('project', context.get_value('project_id')). \
@@ -28,6 +28,7 @@ def big_query(entity, query, context):
         load()
 
     data.registerTempTable(entity['entity_name'])
+    print(f"query_id={query_id}")
     return get_spark_session().sql(query)
 
 
